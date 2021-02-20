@@ -1,0 +1,31 @@
+version: "3"
+
+networks:
+  web-file-transfer:
+
+services:
+  frontend:
+    container_name: frontend
+    build: ./frontend-wft
+    environment:
+      PORT: 8081
+      BACKEND_URL: http://backend:8080
+    networks:
+      - web-file-transfer
+    ports:
+      - "8081:8081"
+  
+  backend:
+    container_name: backend
+    build: ./backend-wft
+    environment:
+      - ALLOWED_ORIGINS=["frontend"]
+      - BASE_URL=http://192.168.1.10:8080/
+      - UPLOAD_DIR=/home/uploadDir/
+      - UPLOAD_FILE_DURATION=60000
+    networks:
+      - web-file-transfer
+    ports:
+      - "8080:8080"
+    volumes:
+      - '/media/data/raspberry/docker/webFileTransfer/uploadDir:/home/uploadDir'
