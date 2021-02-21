@@ -21,11 +21,12 @@ services:
     environment:
       - ALLOWED_ORIGINS=["frontend"]
       - BASE_URL=http://192.168.1.10:8080/
-      - UPLOAD_DIR=/home/uploadDir/
+      - DATA_DIR=/home/data/
+      - UPLOAD_DIR=/home/data/uploadDir/
       - UPLOAD_FILE_DURATION=60000
     networks:
       - web-file-transfer
     ports:
       - "8080:8080"
     volumes:
-      - '/media/data/raspberry/docker/webFileTransfer/uploadDir:/home/uploadDir'
+      - 'webfiletransfer_data:/home/data'
