@@ -30,3 +30,7 @@ services:
       - "8080:8080"
     volumes:
       - 'webfiletransfer_data:/home/data'
+
+volumes:
+  webfiletransfer_data:
+    external: true
