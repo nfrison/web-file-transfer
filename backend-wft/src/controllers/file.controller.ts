@@ -29,7 +29,7 @@ class FileController
         message: "Uploaded the file successfully: " + req.file.originalname,
       });
 
-      this.io.emit("listChanged", this.fileService.readAll());
+      this.io.emit("filesUpdate", this.fileService.readAll());
   
       if (FileController  .uploadFileDuration > -1) {
         new Promise(() => {
@@ -42,7 +42,7 @@ class FileController
   
               console.log(`Deleted file: ${filename}`);
 
-              that.io.emit("listChanged", that.fileService.readAll());
+              that.io.emit("filesUpdate", that.fileService.readAll());
             } catch (err) {
               if (err) {
                 console.error(err);

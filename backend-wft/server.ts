@@ -39,6 +39,7 @@ var corsOptions: cors.CorsOptions = {
 app.use(cors({origin: "*"}));
 //app.use(cors(corsOptions));
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const server = createServer(app);

@@ -1,7 +1,8 @@
 import fs from "fs";
 import File from "../models/file.model";
+import Service from "./service";
 
-class FileService
+class FileService implements Service<File>
 {
     private static instance: FileService;
     private static readonly directoryPath = process.env.UPLOAD_DIR + "";
@@ -12,12 +13,17 @@ class FileService
         if (!FileService.instance)
         {
             FileService.instance = new FileService();
+
+            if (!fs.existsSync(this.directoryPath))
+            {
+                fs.mkdirSync(this.directoryPath);
+            }
         }
         return FileService.instance;
     }
 
-    public create = () => {
-
+    public create = (file: File): File | Error => {
+        return new Error("Not implemented");
     }
 
     public readAll = (): Array<File> | Error => {

@@ -5,8 +5,6 @@ import { Box, Container, Typography, Button, ListItem, withStyles } from '@mater
 import { io } from "socket.io-client";
 import File from "../models/file.model";
 
-const ENDPOINT = process.env.REACT_APP_BACKEND_URL;
-
 const BorderLinearProgress = withStyles((theme) => ({
     root: {
         height: 15,
@@ -27,7 +25,7 @@ type UploadFilesState = {
     progress: number,
     message: string,
     isError: boolean,
-    fileInfos: Array<{url: string, name: string}>,
+    fileInfos: Array<File>,
 }
 
 export default class UploadFiles extends Component<{}, UploadFilesState> {
@@ -102,10 +100,11 @@ export default class UploadFiles extends Component<{}, UploadFilesState> {
             console.error(reason);
         });
 
+        const ENDPOINT = process.env.REACT_APP_BACKEND_URL;
         if (ENDPOINT) {
             console.log(ENDPOINT);
             const socket = io(ENDPOINT);
-            socket.on("listChanged", (data: Array<File>) => {
+            socket.on("filesUpdate", (data: Array<File>) => {
                 console.log(data);
                 this.setState(
                     { fileInfos: data }
