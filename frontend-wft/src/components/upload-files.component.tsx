@@ -22,6 +22,7 @@ const BorderLinearProgress = withStyles((theme) => ({
 type UploadFilesState = {
     selectedFiles: any,
     currentFile: any,
+    permanent: boolean,
     progress: number,
     message: string,
     isError: boolean,
@@ -35,6 +36,7 @@ export default class UploadFiles extends Component<{}, UploadFilesState> {
         this.state = {
             selectedFiles: undefined,
             currentFile: undefined,
+	    permanent: false,
             progress: 0,
             message: "",
             isError: false,
@@ -51,13 +53,14 @@ export default class UploadFiles extends Component<{}, UploadFilesState> {
     upload = () => {
 
         let currentFile = this.state.selectedFiles[0];
+	const permanent = this.state.permanent;
 
         this.setState({
             progress: 0,
             currentFile: currentFile,
         });
     
-        UploadFileService.upload(currentFile, (event: any) => {
+        UploadFileService.upload(currentFile, permanent, (event: any) => {
             this.setState({
                 progress: Math.round((100 * event.loaded) / event.total),
             });
@@ -88,6 +91,12 @@ export default class UploadFiles extends Component<{}, UploadFilesState> {
         this.setState({
             selectedFiles: undefined,
         });
+    }
+
+    setPermanent = (event: any) => {
+	this.setState({
+	    permanent: event.target.checked,
+	}); 
     }
 
     componentDidMount = () => {
@@ -162,6 +171,10 @@ export default class UploadFiles extends Component<{}, UploadFilesState> {
                         onClick={this.upload}>
                     Upload
                 </Button>
+                <div>
+		    <label htmlFor="permanent">Permanent</label>
+		    <input id="permanent" type="checkbox" onChange={this.setPermanent} />
+		</div>
 
                 <Typography variant="subtitle2" className={`upload-message ${isError ? "error" : ""}`}>
                 {message}

@@ -20,7 +20,7 @@ class FileController
   public upload = async (req: Request, res: Response) => {
     try {
       await uploadFile(req, res);
-  
+
       if (req.file == undefined) {
         return res.status(400).send({ message: "Please upload a file!" });
       }
@@ -31,7 +31,8 @@ class FileController
 
       this.io.emit("filesUpdate", this.fileService.readAll());
   
-      if (FileController  .uploadFileDuration > -1) {
+      const permanent = (req.body.permanent !== undefined && req.body.permanent === "true") ? true : false;
+      if (FileController  .uploadFileDuration > -1 && !permanent) {
         new Promise(() => {
           const that = this;
           setTimeout(function() {

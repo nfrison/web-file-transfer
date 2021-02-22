@@ -3,10 +3,11 @@ import http from "../http-common";
 class UploadFileService {
     private static instance: UploadFileService;
 
-    upload(file: any, onUploadProgress: any) {
+    upload(file: any, permanent: boolean, onUploadProgress: any) {
         let formData = new FormData();
 
         formData.append("file", file);
+	formData.append("permanent", permanent ? "true" : "false");
 
         return http.post("/upload", formData, {
             headers: {
