@@ -7,6 +7,8 @@ services:
   frontend:
     container_name: frontend
     build: ./frontend-wft
+    depends_on:
+      - backend
     environment:
       PORT: 8081
       REACT_APP_BACKEND_URL: http://${BACKEND_IP}:8080
@@ -14,6 +16,7 @@ services:
       - web-file-transfer
     ports:
       - "8081:8081"
+    restart: always
   
   backend:
     container_name: backend
@@ -28,6 +31,7 @@ services:
       - web-file-transfer
     ports:
       - "8080:8080"
+    restart: always
     volumes:
       - 'webfiletransfer_data:/home/data'
 
